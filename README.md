@@ -19,13 +19,3 @@ All the text lives in `content.js`. Add a file there and it shows up in `ls`.
     python3 -m http.server 8000
 
 Then open http://localhost:8000.
-
-## Novig stats
-
-A GitHub Action runs `scripts/update-novig-stats.mjs` once a day and commits the result.
-Pull before pushing, since the Action commits to `main`.
-To refresh by hand: `node scripts/update-novig-stats.mjs`.
-
-## Font
-
-Geist Mono, under the SIL Open Font License (`assets/fonts/OFL-GeistMono.txt`).

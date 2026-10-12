@@ -1,18 +1,9 @@
-/*
- * content.js — everything the terminal can `ls` and `cat`.
- * Edit the text here; the terminal (main.js) reads this object and nothing else.
- *
- * A string is a text file. An object is a folder.
- * Special entries:
- *   { link: 'path' }        a binary file that `open` launches (e.g. the resume PDF)
- *   { generated: 'novig' }  novig-stats.txt, built from assets/novig-stats.js
- */
+// Everything the terminal can ls and cat: a string is a text file, an object a folder, { link } a binary file that open launches, { generated: 'novig' } the Novig stats.
 window.SITE = {
   user: 'guest',
   host: 'sean',
   home: '/home/guest',
 
-  // Right-hand column of the fastfetch screen (static lines; live ones are added by main.js).
   fetch: [
     ['Name', 'Sean Shiroma'],
     ['Role', 'Software Engineer'],
@@ -132,8 +123,6 @@ Jan 2026 – May 2026
 - Built a non-trivial RISC-V operating system modeled on Linux and FreeBSD for my graduate operating systems class.
 - Used C, QEMU, GDB, RISC-V toolchain.
 `,
-      // Add a link line under the dates once the repo is public, e.g.
-      // https://github.com/sean-ks/<repo>
 
       'discord-clone.txt':
 `Discord Clone
@@ -154,7 +143,6 @@ https://github.com/tarunvaid05/Seawolf-Accessibility
 `,
     },
 
-    // Arch's stock /etc/skel dotfiles (shown by `ls -a`).
     '.bashrc':
 `#
 # ~/.bashrc

@@ -2,7 +2,6 @@ name: Update Novig stats
 
 on:
   schedule:
-    # lbtrading.com publishes the day's stats around 04:00 UTC.
     - cron: "30 5 * * *"
   workflow_dispatch:
 
@@ -24,10 +23,10 @@ jobs:
         with:
           node-version: 22
 
-      - name: Fetch stats
+      - name: Fetch stats (lbtrading.com publishes the day's numbers around 04:00 UTC)
         run: node scripts/update-novig-stats.mjs
 
-      - name: Commit if changed
+      - name: Commit if changed, rebase (safe, the bot only touches assets/novig-stats.js) and push
         run: |
           if [ -z "$(git status --porcelain -- assets/novig-stats.js)" ]; then
             echo "assets/novig-stats.js unchanged"
@@ -37,7 +36,5 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add assets/novig-stats.js
           git commit -m "Update Novig stats snapshot"
-          # main may have moved since checkout (a push by the owner, an overlapping run); the bot only
-          # touches assets/novig-stats.js, so the rebase cannot conflict with content edits
           git pull --rebase --autostash origin "${GITHUB_REF_NAME}"
           git push

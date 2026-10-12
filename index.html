@@ -16,8 +16,35 @@
 <link rel="stylesheet" href="style.css">
 <script src="content.js" defer></script>
 <script src="assets/novig-stats.js" defer></script>
-<script src="renderer.js" defer></script>
-<script src="main.js" defer onerror="document.documentElement.classList.remove('js')"></script>
+<link rel="modulepreload" href="js/main.js">
+<link rel="modulepreload" href="js/boot.js">
+<link rel="modulepreload" href="js/base.js">
+<link rel="modulepreload" href="js/bindings.js">
+<link rel="modulepreload" href="js/fastfetch.js">
+<link rel="modulepreload" href="js/file-commands.js">
+<link rel="modulepreload" href="js/fs.js">
+<link rel="modulepreload" href="js/input.js">
+<link rel="modulepreload" href="js/logo.js">
+<link rel="modulepreload" href="js/metrics.js">
+<link rel="modulepreload" href="js/novig.js">
+<link rel="modulepreload" href="js/output.js">
+<link rel="modulepreload" href="js/pane.js">
+<link rel="modulepreload" href="js/screen.js">
+<link rel="modulepreload" href="js/shell.js">
+<link rel="modulepreload" href="js/state.js">
+<link rel="modulepreload" href="js/status.js">
+<link rel="modulepreload" href="js/system-commands.js">
+<link rel="modulepreload" href="js/tmux.js">
+<link rel="modulepreload" href="js/tmux-commands.js">
+<link rel="modulepreload" href="js/view.js">
+<link rel="modulepreload" href="js/renderer/atlas.js">
+<link rel="modulepreload" href="js/renderer/gl.js">
+<link rel="modulepreload" href="js/renderer/index.js">
+<link rel="modulepreload" href="js/renderer/loop.js">
+<link rel="modulepreload" href="js/renderer/pose.js">
+<link rel="modulepreload" href="js/renderer/shaders.js">
+<script type="module" src="js/main.js" onerror="document.documentElement.classList.remove('js')"></script>
+<script nomodule>document.documentElement.classList.remove('js')</script>
 </head>
 <body>
 <div class="sr-only intro">

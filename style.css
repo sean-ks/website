@@ -4,7 +4,6 @@
 @font-face{font-family:"Geist Mono FB";src:local("Menlo Regular"),local("Menlo-Regular"),local("DejaVu Sans Mono"),local("DejaVuSansMono");size-adjust:99.66%;ascent-override:100.84%;descent-override:29.6%;line-gap-override:0%}
 @font-face{font-family:"Geist Mono FB2";src:local("Consolas");size-adjust:109.13%;ascent-override:92.09%;descent-override:27.03%;line-gap-override:0%}
 
-/* --bd/--on: pane borders (active: green, as in tmux); --sb/--sf: status line (tmux's green bar, black text); --msg: messages and prompts */
 :root{
 --bg:#0d0e10;--bg2:#16181b;--fg:#c8cbd0;--hi:#eceef1;--dim:#7c828c;--accent:#1793d1;--bright:#46b0e8;--line:#2c3036;--sel:rgba(23,147,209,.34);
 --c0:#2a2d33;--c1:#d36a6a;--c2:#8fbf72;--c3:#d7b56a;--c4:#1793d1;--c5:#b07fd0;--c6:#4fb3bf;--c7:#c8cbd0;
@@ -24,10 +23,8 @@ color-scheme:light}}
 --c8:#6c7078;--c9:#d25454;--c10:#569a3e;--c11:#b08a26;--c12:#1793d1;--c13:#9a66c2;--c14:#2e9aa6;--c15:#dddcd5;
 --bd:#8f8d85;--on:#3f7a2a;--sb:#82b866;--sf:#0e1013;--msg:#e2c25e;
 color-scheme:light}
-/* whole-pixel padding keeps the logo canvas on device pixels */
 @media (max-width:1100px){:root{--pad:20px}}
 @media (max-width:640px){:root{--fs:14px;--lh:20px;--pad:12px}}
-/* big screens: bigger type, as on a terminal on a large monitor */
 @media (min-width:1680px) and (min-height:880px){:root{--fs:17px;--lh:24px;--pad:36px}}
 @media (min-width:2200px) and (min-height:1150px){:root{--fs:19px;--lh:27px;--pad:44px}}
 
@@ -38,14 +35,11 @@ body{margin:0;background:var(--bg);color:var(--fg);font:400 var(--fs)/var(--lh) 
 ::selection{background:var(--sel)}
 html:not(.js) .term,html:not(.js) .intro,.js .nojs{display:none}
 .sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
-/* its height tells main.js 100svh */
 .probe{position:absolute;left:0;top:0;width:0;height:100vh;height:100svh;overflow:hidden;visibility:hidden;white-space:pre;pointer-events:none}
 
-/* the tmux client fills the (visual) viewport: the cell grid, the touch keys, the status line */
 .term{position:fixed;left:0;right:0;top:0;height:100vh;height:100dvh;display:flex;flex-direction:column;-webkit-tap-highlight-color:transparent}
 .scr{position:relative;flex:1 1 0;min-height:0;overflow:hidden;margin:var(--pad) max(var(--pad),env(safe-area-inset-right)) 0 max(var(--pad),env(safe-area-inset-left))}
 .win{position:absolute;left:0;right:0;bottom:0}
-/* panes scroll on their own, without scroll bars (they would take columns) */
 .pane{position:absolute;overflow:hidden auto;overscroll-behavior:contain;scrollbar-width:none}
 .pane::-webkit-scrollbar{display:none}
 .alt>.out,.alt>.cmd,.md>.view{display:none}
@@ -56,7 +50,6 @@ html:not(.js) .term,html:not(.js) .intro,.js .nojs{display:none}
 .status .w{cursor:pointer}
 .status .cur{background:var(--sf);animation:none}
 
-/* output */
 .l,.cmd{min-height:var(--lh);white-space:pre-wrap;overflow-wrap:anywhere}
 .u,.k{color:var(--accent);font-weight:700}
 .di{color:var(--c4);font-weight:700}
@@ -70,7 +63,6 @@ a{color:inherit;text-decoration-line:underline;text-decoration-color:var(--dim);
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .hr{display:grid;grid-template-columns:calc(var(--w)*1ch) minmax(0,1fr)}
 
-/* fastfetch */
 .ff{display:flex;align-items:flex-start}
 .ff-logo{position:relative;flex:none;width:calc(var(--c)*1ch);height:calc(var(--r)*var(--lh));margin-right:calc(var(--g)*1ch)}
 .ff.sp{margin-bottom:var(--lh)}
@@ -83,9 +75,7 @@ a{color:inherit;text-decoration-line:underline;text-decoration-color:var(--dim);
 .pend{visibility:hidden}
 .cb{display:flex}.cb span{flex:none;width:3ch;height:var(--lh)}
 
-/* prompt line: a real input receives keys; the spans mirror it with a block cursor (only the active pane shows one) */
 .cmd{position:relative;margin:0;word-break:break-all}
-/* a hidden input would lose focus */
 .cmd.busy>span{visibility:hidden}
 .cmd input{position:absolute;left:0;top:0;width:100%;height:var(--lh);margin:0;padding:0;border:0;outline:0;opacity:0;font-size:16px;color:transparent;background:transparent;caret-color:transparent;pointer-events:none}
 .sel{background:var(--sel)}
@@ -97,7 +87,6 @@ a{color:inherit;text-decoration-line:underline;text-decoration-color:var(--dim);
 @media (prefers-reduced-motion:reduce){.cur{animation:none}}
 @media (forced-colors:active){.cur{forced-color-adjust:none;background:CanvasText;color:Canvas}.cmd:not(.on) .cur{background:none;color:CanvasText;outline:1px solid CanvasText;outline-offset:-1px}.bd i,.vs:before{background:CanvasText}}
 
-/* view: tree | border | file, and a line for the path and keys; narrow panes stack the tree above the file */
 .view{position:absolute;inset:0;display:grid;grid-template:minmax(0,1fr) var(--lh)/calc(var(--tw)*1ch) 1ch minmax(0,1fr)}
 .view.stack{grid-template:calc(var(--th)*var(--lh)) var(--lh) minmax(0,1fr) var(--lh)/minmax(0,1fr)}
 .vt,.vp,.ml{position:relative;overflow:hidden auto;overscroll-behavior:contain;scrollbar-width:none;outline:0}
@@ -117,7 +106,6 @@ a{color:inherit;text-decoration-line:underline;text-decoration-color:var(--dim);
 .vh{flex:none}
 .vb .x{position:relative}.vb .x:after{content:"";position:absolute;inset:-12px -8px}
 
-/* tmux modes: list-keys (prefix ?) with its position at the top right, pane numbers (prefix q) */
 .mode{position:absolute;inset:0;outline:0}
 .ml{height:100%}.ml .l{white-space:pre;overflow:hidden}
 .ind{position:absolute;right:0;top:0;background:var(--msg);color:var(--sf)}
@@ -126,14 +114,12 @@ a{color:inherit;text-decoration-line:underline;text-decoration-color:var(--dim);
 .dp div{height:var(--lh)}
 .dp b{display:inline-block;height:var(--lh);vertical-align:top;background:currentColor}
 
-/* touch suggestions, above the status line */
 .keys{display:none;flex:none;gap:8px;overflow-x:auto;scrollbar-width:none;padding:8px max(var(--pad),env(safe-area-inset-right)) 8px max(var(--pad),env(safe-area-inset-left))}
 @media (pointer:coarse){.keys{display:flex}}
 .keys::-webkit-scrollbar{display:none}
 .keys button{flex:none;font:inherit;color:var(--fg);background:var(--bg2);border:1px solid var(--line);border-radius:6px;min-width:44px;min-height:40px;padding:0 12px;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .keys button:active{border-color:var(--accent)}
 
-/* without JavaScript */
 .nojs{max-width:80ch;padding:var(--pad)}.nojs .pre{white-space:pre-wrap}
 .nojs h1{font:inherit;font-weight:700;color:var(--accent);margin:0 0 var(--lh)}
 .nojs p{margin:0 0 var(--lh)}

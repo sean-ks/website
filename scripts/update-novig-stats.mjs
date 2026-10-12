@@ -1,13 +1,4 @@
-#!/usr/bin/env node
-// Snapshots the public Novig stats from https://www.lbtrading.com/stats/novig
-// into assets/novig-stats.js (lbtrading.com sends no CORS header, so the site
-// cannot read it live). Values are computed the same way lbtrading.com's own
-// stats.js computes them.
-//
-// Usage: node scripts/update-novig-stats.mjs        (Node 18+, no dependencies)
-// Exit 0: file written, or already up to date.
-// Exit 1: fetch or validation failed; the existing file is left untouched.
-
+// Snapshots the public Novig stats from lbtrading.com into assets/novig-stats.js (the site cannot fetch them live: no CORS), computing them as lbtrading.com's own stats.js does; exits 1 and keeps the old file on any failure.
 import { readFile, rename, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 
@@ -20,7 +11,6 @@ const TIMEOUT_MS = 20000;
 const USER_AGENT =
   'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36';
 
-// Same as asNumber() in lbtrading.com/stats/stats.js.
 function asNumber(raw) {
   if (raw === null || raw === undefined) return NaN;
   const s = String(raw).trim();
@@ -39,10 +29,8 @@ async function get(url, accept) {
   } catch (err) {
     throw new Error(`${url}: ${err.cause?.message || err.message}`);
   }
-  // Cloudflare can answer datacenter IPs with an HTML challenge page.
   const html = /html/i.test(res.headers.get('content-type') || '') || /^\s*</.test(body);
   if (!res.ok) {
-    // only statuses Cloudflare uses for blocks and challenges get the hint; a plain 404 means the file moved
     const challenged = html && ([403, 429, 503].includes(res.status) || res.headers.has('cf-mitigated'));
     throw new Error(`${url}: HTTP ${res.status}${challenged ? ' with an HTML page (blocked or challenged?)' : ''}`);
   }
@@ -80,7 +68,6 @@ function parseSummary({ body, headers }) {
   return { profit, trades, volume_usd, sharpe, updated: updated.toISOString() };
 }
 
-// Mirrors loadHistory() in lbtrading.com/stats/stats.js.
 function parseHistory({ body }) {
   const lines = body.trim().split(/\r?\n/);
   const header = lines.shift().split(',').map((s) => s.trim());
