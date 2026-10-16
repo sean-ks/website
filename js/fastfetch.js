@@ -42,6 +42,7 @@ function shortGPU(s) {
 
 const LOGO = 'Logo: a torus drawn with text characters.';
 const infoWidth = f => Math.max(...[...f.info.children].map(d => d.classList.contains('cb') ? 24 : d.textContent.length));
+const PHOTO_ROWS = 8;
 export function fastfetch() {
   killLive();
   const ff = el('div', 'ff'), logo = el('div', 'ff-logo'), art = el('pre', 'ff-art'), info = el('div', 'ff-info');
@@ -60,17 +61,17 @@ export function fastfetch() {
   if (gpu !== '') { const s = kv('GPU', gpu || '', 1); if (!gpu) { s.parentNode.classList.add('pend'); f.gpu = s; } }
   kv('Locale', navigator.language || 'en-US');
   f.th = kv('Theme', themeEff(), 1);
+  const pic = Object.values(SITE.fs).find(v => v && v.image);
+  if (pic) info.append(f.photo = attr(el('img', 'ff-photo'), { src: pic.link, alt: pic.image }));
   line();
   for (const b of [0, 8]) {
     const d = line();
     d.className = 'cb'; d.setAttribute('aria-hidden', 'true');
     for (let i = 0; i < 8; i++) { const s = el('span'); s.style.background = 'var(--c' + (b + i) + ')'; d.append(s); }
   }
-  const pic = Object.values(SITE.fs).find(v => v && v.image);
-  if (pic) ff.append(f.photo = attr(el('img', 'ff-photo'), { src: pic.link, alt: pic.image }));
   P.out.append(ff);
   ff._f = f; setLiveFetch(f);
-  f.iw = infoWidth(f); f.n = info.childElementCount;
+  f.iw = infoWidth(f); f.n = info.childElementCount + (f.photo ? PHOTO_ROWS - 1 : 0);
   sizeLogos([f]);
   requestAnimationFrame(() => setTimeout(() => Promise.all([fontsReady, rendererLoaded]).then(([, GlyphRenderer]) => { if (liveFetch === f) { measure(); refresh(); mountRenderer(f, GlyphRenderer); } }), 0));
 }

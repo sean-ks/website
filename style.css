@@ -71,8 +71,7 @@ a{color:inherit;text-decoration-line:underline;text-decoration-color:var(--dim);
 .ff-logo.gl .ff-art{visibility:hidden}
 .ff-logo canvas{position:absolute;left:0;top:0;display:block}
 .ff-info{min-width:0}
-.ff-photo{flex:none;width:var(--pw);height:var(--pw);margin-left:calc(var(--g)*1ch);object-fit:cover}
-.ff.nophoto .ff-photo{display:none}
+.ff-photo{display:block;width:calc(8*var(--lh));height:calc(8*var(--lh));object-fit:cover}
 .vimg{display:block;max-width:min(100%,360px);height:auto;margin:0 0 var(--lh)}
 .g1{color:var(--dim)}.g2{color:var(--accent)}.g3{color:var(--bright)}
 .pend{visibility:hidden}

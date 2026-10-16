@@ -62,9 +62,7 @@ export function sizeLogos(list) {
       c = Math.min(32, W, Math.round(r * cell.h / cell.w));
     }
     f.ff.classList.toggle('stack', f.stack);
-    const room = f.stack ? 0 : Math.min(r * cell.h, (W - c - 2 * g - f.iw) * cell.w);
-    for (const [k, v] of [['c', c], ['r', r], ['g', g], ['pw', Math.floor(room) + 'px']]) f.ff.style.setProperty('--' + k, v);
-    f.ff.classList.toggle('nophoto', room < 8 * cell.h);
+    for (const [k, v] of [['c', c], ['r', r], ['g', g]]) f.ff.style.setProperty('--' + k, v);
     const key = [c, r, cell.w, cell.h, cell.font].join();
     if (key === f.key) continue;
     f.key = key; f.c = c; f.r = r;
