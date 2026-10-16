@@ -51,7 +51,8 @@ export function browse(p, dir, first) {
       if (n.t === 'f') v.append(fileBox(n.text));
       else if (n.t === 'g') { const s = novigText(); v.append(s ? fileBox(s) : el('div', 'l', n.name + ': snapshot unavailable')); }
       else if (n.t === 'l') {
-        const a = el('a', '', 'open ' + n.name), d = el('div', 'l', n.name + ': binary file (use: ');
+        if (n.img) v.append(attr(el('img', 'vimg'), { src: n.href, alt: n.img }));
+        const a = el('a', '', 'open ' + n.name), d = el('div', 'l', n.name + ': ' + (n.img ? 'image' : 'binary file') + ' (use: ');
         a.href = n.href; a.target = '_blank'; a.rel = 'noopener noreferrer';
         d.append(a, ')'); v.append(d);
       }

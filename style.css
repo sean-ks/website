@@ -71,6 +71,9 @@ a{color:inherit;text-decoration-line:underline;text-decoration-color:var(--dim);
 .ff-logo.gl .ff-art{visibility:hidden}
 .ff-logo canvas{position:absolute;left:0;top:0;display:block}
 .ff-info{min-width:0}
+.ff-photo{flex:none;width:var(--pw);height:var(--pw);margin-left:calc(var(--g)*1ch);object-fit:cover}
+.ff.nophoto .ff-photo{display:none}
+.vimg{display:block;max-width:min(100%,360px);height:auto;margin:0 0 var(--lh)}
 .g1{color:var(--dim)}.g2{color:var(--accent)}.g3{color:var(--bright)}
 .pend{visibility:hidden}
 .cb{display:flex}.cb span{flex:none;width:3ch;height:var(--lh)}
@@ -114,12 +117,12 @@ a{color:inherit;text-decoration-line:underline;text-decoration-color:var(--dim);
 .dp div{height:var(--lh)}
 .dp b{display:inline-block;height:var(--lh);vertical-align:top;background:currentColor}
 
-.keys{display:none;flex:none;gap:8px;overflow-x:auto;scrollbar-width:none;padding:8px max(var(--pad),env(safe-area-inset-right)) 8px max(var(--pad),env(safe-area-inset-left))}
-@media (pointer:coarse){.keys{display:flex}}
+.keys{display:flex;flex:none;gap:8px;overflow-x:auto;scrollbar-width:none;padding:8px max(var(--pad),env(safe-area-inset-right)) 8px max(var(--pad),env(safe-area-inset-left))}
 .keys::-webkit-scrollbar{display:none}
 .keys button{flex:none;font:inherit;color:var(--fg);background:var(--bg2);border:1px solid var(--line);border-radius:6px;min-width:44px;min-height:40px;padding:0 12px;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .keys button:active{border-color:var(--accent)}
 
 .nojs{max-width:80ch;padding:var(--pad)}.nojs .pre{white-space:pre-wrap}
+.nojs img{display:block;margin:0 0 var(--lh)}
 .nojs h1{font:inherit;font-weight:700;color:var(--accent);margin:0 0 var(--lh)}
 .nojs p{margin:0 0 var(--lh)}

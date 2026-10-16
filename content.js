@@ -17,6 +17,8 @@ window.SITE = {
 `Software engineer based in New York. Studying Computer Science and Math at Stony Brook University.
 
 My work spans full-stack development, trading systems, machine learning, cryptography, systems programming, distributed systems, and storage systems.
+
+Looking for a broad range of technical work, reach out to seanks2004@gmail.com.
 `,
 
     'contact-me.txt':
@@ -54,7 +56,9 @@ tools       Git, Linux, GDB, QEMU, CUDA, k6, pm2
 
     'novig-stats.txt': { generated: 'novig' },
 
-    'resume.pdf': { link: 'assets/resume.pdf' },
+    'resume.pdf': { link: 'resume_sean_shiroma.pdf' },
+
+    'picture.jpeg': { link: 'picture.jpeg', image: 'Photo of Sean Shiroma' },
 
     experience: {
       'lbtrading.txt':

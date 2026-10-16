@@ -66,6 +66,8 @@ export function fastfetch() {
     d.className = 'cb'; d.setAttribute('aria-hidden', 'true');
     for (let i = 0; i < 8; i++) { const s = el('span'); s.style.background = 'var(--c' + (b + i) + ')'; d.append(s); }
   }
+  const pic = Object.values(SITE.fs).find(v => v && v.image);
+  if (pic) ff.append(f.photo = attr(el('img', 'ff-photo'), { src: pic.link, alt: pic.image }));
   P.out.append(ff);
   ff._f = f; setLiveFetch(f);
   f.iw = infoWidth(f); f.n = info.childElementCount;

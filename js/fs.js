@@ -6,7 +6,7 @@ import { stats, novigText } from './novig.js';
 const mk = (name, v, parent) => {
   const n = { name, parent };
   if (typeof v === 'string') { n.t = 'f'; n.text = v; }
-  else if (v.link) { n.t = 'l'; n.href = v.link; }
+  else if (v.link) { n.t = 'l'; n.href = v.link; n.img = v.image || ''; }
   else if (v.generated) n.t = 'g';
   else { n.t = 'd'; n.kids = new Map(); for (const k of Object.keys(v)) n.kids.set(k, mk(k, v[k], n)); }
   return n;
