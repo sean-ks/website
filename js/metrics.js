@@ -28,14 +28,10 @@ export function grid() {
 const BG = { dark: '#0d0e10', light: '#f6f5f0' };
 export const themeGet = () => root.getAttribute('data-theme') || 'auto';
 export const themeEff = () => { const t = themeGet(); return t !== 'auto' ? t : lightq.matches ? 'light' : 'dark'; };
-export function colors() {
-  const cs = getComputedStyle(root), g = k => cs.getPropertyValue('--' + k).trim();
-  return { bg: g('bg'), dim: g('dim'), fg: g('fg'), accent: g('accent'), bright: g('bright') };
-}
 export function themeChanged() {
   const t = themeGet();
   for (const m of D.querySelectorAll('meta[name="theme-color"]')) m.content = t !== 'auto' ? BG[t] : /light/.test(m.media) ? BG.light : BG.dark;
-  if (liveFetch) { liveFetch.th.textContent = themeEff(); if (liveFetch.inst) try { liveFetch.inst.setColors(colors()); } catch (e) {} }
+  if (liveFetch) liveFetch.th.textContent = themeEff();
 }
 export function setTheme(t) {
   if (t === 'auto') root.removeAttribute('data-theme'); else root.setAttribute('data-theme', t);

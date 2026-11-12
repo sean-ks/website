@@ -1,11 +1,11 @@
-// fastfetch: the system summary beside the logo, and the one live glyph renderer, in whichever pane printed it last.
-import { el, sp, attr, rmq, SITE, USER, HOST } from './base.js';
+// fastfetch: the system summary beside the Christmas tree logo, which is live in whichever pane printed it last and frozen in the rest.
+import { el, sp, attr, rmq, snow, SITE, USER, HOST } from './base.js';
 import { P, liveFetch, setLiveFetch } from './state.js';
-import { cell, measure, colors, themeEff, fontsReady } from './metrics.js';
+import { cell, measure, themeEff, fontsReady } from './metrics.js';
 import { sizeLogos } from './logo.js';
 import { refresh } from './screen.js';
 
-const rendererLoaded = import('./renderer/index.js').catch(e => { setTimeout(() => { throw e; }); return null; });
+const treeLoaded = import('./tree.js').catch(e => { setTimeout(() => { throw e; }); return null; });
 let gpu;
 export const upMins = () => Math.floor(performance.now() / 60000);
 export function upStr(m, unit = 'min') {
@@ -22,11 +22,12 @@ function browser() {
   for (const [r, name] of t) { const m = u.match(r); if (m) return name + ' ' + m[1]; }
   return 'unknown';
 }
-function gpuNameFromRendererContext(cv) {
+function gpuName() {
   try {
-    const gl = cv.getContext('webgl');
+    const gl = el('canvas').getContext('webgl'), lose = gl.getExtension('WEBGL_lose_context');
     let s = gl.getParameter(gl.RENDERER) || '';
     if (/^(WebKit WebGL|Mozilla)$/.test(s)) { const x = gl.getExtension('WEBGL_debug_renderer_info'); s = x ? gl.getParameter(x.UNMASKED_RENDERER_WEBGL) : ''; }
+    if (lose) lose.loseContext();
     return shortGPU(String(s || ''));
   } catch (e) { return ''; }
 }
@@ -40,21 +41,19 @@ function shortGPU(s) {
   return s.length > 32 ? s.slice(0, 31) + '…' : s;
 }
 
-const LOGO = 'Logo: a torus drawn with text characters.';
 const infoWidth = f => Math.max(...[...f.info.children].map(d => d.classList.contains('cb') ? 24 : d.textContent.length));
 const PHOTO_ROWS = 8;
 export function fastfetch() {
   killLive();
-  const ff = el('div', 'ff'), logo = el('div', 'ff-logo'), art = el('pre', 'ff-art'), info = el('div', 'ff-info');
-  attr(logo, { role: 'img', 'aria-label': LOGO }); art.setAttribute('aria-hidden', 'true');
-  logo.append(art); ff.append(logo, info);
+  const ff = el('div', 'ff'), logo = attr(el('div', 'ff-logo'), { role: 'img', 'aria-label': 'Logo: a Christmas tree drawn with text characters.' }), info = el('div', 'ff-info');
+  ff.append(logo, info);
   const line = (...a) => { const d = el('div', 'l'); d.append(...a); info.append(d); return d; };
   const kv = (k, v, quiet) => { const s = sp('', v); if (quiet) s.setAttribute('aria-live', 'off'); line(sp('k', k), ': ', s); return s; };
   line(sp('k', USER), '@', sp('k', HOST));
   line('-'.repeat(USER.length + HOST.length + 1));
   kv('OS', 'Arch Linux x86_64');
   for (const [k, v] of SITE.fetch || []) kv(k, v);
-  const f = { ff, logo, art, info, p: P };
+  const f = { ff, logo, info, p: P };
   f.up = kv('Uptime', upStr(upMins()), 1);
   f.res = kv('Resolution', innerWidth + 'x' + innerHeight, 1);
   kv('Terminal', browser());
@@ -73,27 +72,13 @@ export function fastfetch() {
   ff._f = f; setLiveFetch(f);
   f.iw = infoWidth(f); f.n = info.childElementCount + (f.photo ? PHOTO_ROWS - 1 : 0);
   sizeLogos([f]);
-  requestAnimationFrame(() => setTimeout(() => Promise.all([fontsReady, rendererLoaded]).then(([, GlyphRenderer]) => { if (liveFetch === f) { measure(); refresh(); mountRenderer(f, GlyphRenderer); } }), 0));
+  requestAnimationFrame(() => setTimeout(() => Promise.all([fontsReady, treeLoaded]).then(([, tree]) => { if (liveFetch === f) { measure(); refresh(); mountTree(f, tree); } }), 0));
 }
-function mountRenderer(f, GlyphRenderer) {
+function mountTree(f, tree) {
   const cv = attr(el('canvas'), { 'aria-hidden': 'true' });
-  let inst = null;
-  if (GlyphRenderer) {
-    f.logo.append(cv);
-    try { inst = GlyphRenderer.create(cv, { cols: f.c, rows: f.r, cellW: cell.w, cellH: cell.h, font: cell.font, colors: colors(), reducedMotion: rmq.matches }); } catch (e) {}
-  }
-  if (inst) {
-    f.inst = inst; f.cv = cv;
-    const say = name => f.logo.setAttribute('aria-label', 'Logo: a ' + (rmq.matches ? '' : 'rotating ') + (name || 'shape') + ' drawn with text characters.');
-    say(inst.shape);
-    inst.onshape = say;
-    const show = on => { cv.style.visibility = on ? '' : 'hidden'; f.logo.classList.toggle('gl', on); };
-    const showAfterTwoFrames = () => requestAnimationFrame(() => requestAnimationFrame(() => { if (f.inst) show(true); }));
-    cv.addEventListener('webglcontextlost', () => show(false));
-    cv.addEventListener('webglcontextrestored', showAfterTwoFrames);
-    showAfterTwoFrames();
-  } else cv.remove();
-  if (gpu === undefined) gpu = inst ? gpuNameFromRendererContext(cv) : '';
+  f.logo.append(cv);
+  try { f.inst = tree.createTree(cv, snow, f.c * cell.w, f.r * cell.h); f.inst.calm(rmq.matches); } catch (e) { cv.remove(); }
+  if (gpu === undefined) gpu = gpuName();
   if (f.gpu) {
     if (gpu) { f.gpu.textContent = gpu; f.gpu.parentNode.classList.remove('pend'); } else f.gpu.parentNode.remove();
     f.gpu = null; f.iw = infoWidth(f); sizeLogos([f]);
@@ -102,10 +87,6 @@ function mountRenderer(f, GlyphRenderer) {
 export function killLive() {
   const f = liveFetch;
   setLiveFetch(null);
-  if (!f || !f.inst) return;
-  try { f.inst.destroy(); } catch (e) {}
-  f.inst = null; f.cv.remove();
-  f.logo.classList.remove('gl');
-  f.logo.setAttribute('aria-label', LOGO);
+  if (f && f.inst) f.inst.stop();
 }
 export function clear() { if (liveFetch && liveFetch.p === P) killLive(); P.out.textContent = ''; }

@@ -7,7 +7,7 @@ export const attr = (e, o) => { for (const k in o) e.setAttribute(k, o[k]); retu
 const mq = q => matchMedia(q);
 export const coarse = mq('(pointer: coarse)'), rmq = mq('(prefers-reduced-motion: reduce)'), lightq = mq('(prefers-color-scheme: light)');
 export const onMQ = (m, f) => m.addEventListener ? m.addEventListener('change', f) : m.addListener(f);
-export const term = $('term'), scr = $('scr'), bar = $('status'), keys = $('keys'), note = $('note');
+export const term = $('term'), scr = $('scr'), snow = $('snow'), bar = $('status'), keys = $('keys'), note = $('note');
 export const USER = SITE.user, HOST = SITE.host, HOME = SITE.home, KERNEL = '7.2.1-arch1-1';
 const TZ = 'America/New_York';
 export const SOCK = '/tmp/tmux-1000/default';

@@ -15,13 +15,13 @@ color-scheme:dark}
 --bg:#f6f5f0;--bg2:#ecebe4;--fg:#26292e;--hi:#0e1013;--dim:#696d75;--accent:#0b6c9f;--bright:#084a6e;--line:#d6d4cb;--sel:rgba(11,108,159,.22);
 --c0:#26292e;--c1:#b23b3b;--c2:#3f7a2a;--c3:#8f6a12;--c4:#0b6c9f;--c5:#7d4aa3;--c6:#1f7a85;--c7:#b9b8b0;
 --c8:#6c7078;--c9:#d25454;--c10:#569a3e;--c11:#b08a26;--c12:#1793d1;--c13:#9a66c2;--c14:#2e9aa6;--c15:#dddcd5;
---bd:#8f8d85;--on:#3f7a2a;--sb:#82b866;--sf:#0e1013;--msg:#e2c25e;
+--bd:#8f8d85;--on:#3f7a2a;--sb:#82b866;--sf:#0e1013;--msg:#e2c25e;--tone:brightness(.62);
 color-scheme:light}}
 :root[data-theme=light]{
 --bg:#f6f5f0;--bg2:#ecebe4;--fg:#26292e;--hi:#0e1013;--dim:#696d75;--accent:#0b6c9f;--bright:#084a6e;--line:#d6d4cb;--sel:rgba(11,108,159,.22);
 --c0:#26292e;--c1:#b23b3b;--c2:#3f7a2a;--c3:#8f6a12;--c4:#0b6c9f;--c5:#7d4aa3;--c6:#1f7a85;--c7:#b9b8b0;
 --c8:#6c7078;--c9:#d25454;--c10:#569a3e;--c11:#b08a26;--c12:#1793d1;--c13:#9a66c2;--c14:#2e9aa6;--c15:#dddcd5;
---bd:#8f8d85;--on:#3f7a2a;--sb:#82b866;--sf:#0e1013;--msg:#e2c25e;
+--bd:#8f8d85;--on:#3f7a2a;--sb:#82b866;--sf:#0e1013;--msg:#e2c25e;--tone:brightness(.62);
 color-scheme:light}
 @media (max-width:1100px){:root{--pad:20px}}
 @media (max-width:640px){:root{--fs:14px;--lh:20px;--pad:12px}}
@@ -67,13 +67,13 @@ a{color:inherit;text-decoration-line:underline;text-decoration-color:var(--dim);
 .ff-logo{position:relative;flex:none;width:calc(var(--c)*1ch);height:calc(var(--r)*var(--lh));margin-right:calc(var(--g)*1ch)}
 .ff.sp{margin-bottom:var(--lh)}
 .ff.stack{flex-direction:column}.ff.stack .ff-logo{margin:0}
-.ff-art{position:absolute;left:0;top:0;margin:0;font:inherit;white-space:pre;overflow:hidden;width:100%;height:100%}
-.ff-logo.gl .ff-art{visibility:hidden}
-.ff-logo canvas{position:absolute;left:0;top:0;display:block}
+.ff-logo canvas{position:absolute;left:0;top:0;display:block;touch-action:pan-y}
+.ff-logo canvas,.snow{filter:var(--tone,none)}
+.snow{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none}
+.keys,.status{position:relative}
 .ff-info{min-width:0}
 .ff-photo{display:block;width:calc(8*var(--lh));height:calc(8*var(--lh));object-fit:cover}
 .vimg{display:block;max-width:min(100%,360px);height:auto;margin:0 0 var(--lh)}
-.g1{color:var(--dim)}.g2{color:var(--accent)}.g3{color:var(--bright)}
 .pend{visibility:hidden}
 .cb{display:flex}.cb span{flex:none;width:3ch;height:var(--lh)}
 

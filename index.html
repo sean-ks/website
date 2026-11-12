@@ -36,13 +36,8 @@
 <link rel="modulepreload" href="js/system-commands.js">
 <link rel="modulepreload" href="js/tmux.js">
 <link rel="modulepreload" href="js/tmux-commands.js">
+<link rel="modulepreload" href="js/tree.js">
 <link rel="modulepreload" href="js/view.js">
-<link rel="modulepreload" href="js/renderer/atlas.js">
-<link rel="modulepreload" href="js/renderer/gl.js">
-<link rel="modulepreload" href="js/renderer/index.js">
-<link rel="modulepreload" href="js/renderer/loop.js">
-<link rel="modulepreload" href="js/renderer/pose.js">
-<link rel="modulepreload" href="js/renderer/shaders.js">
 <script type="module" src="js/main.js" onerror="document.documentElement.classList.remove('js')"></script>
 <script nomodule>document.documentElement.classList.remove('js')</script>
 </head>
@@ -53,6 +48,7 @@
 </div>
 <main class="term" id="term">
 <div class="scr" id="scr"></div>
+<canvas class="snow" id="snow" aria-hidden="true"></canvas>
 <div class="keys" id="keys" role="group" aria-label="Suggested commands"><button type="button" data-run="help">help</button><button type="button" data-run="ls">ls</button><button type="button" data-run="view .">view .</button><button type="button" data-run="cd ..">cd ..</button><button type="button" data-run="clear">clear</button></div>
 <div class="status" id="status" hidden></div>
 <div class="sr-only" id="note" role="status"></div>

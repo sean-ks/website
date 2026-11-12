@@ -18,7 +18,6 @@ import './logo.js';
 import './novig.js';
 import './tmux-commands.js';
 import './view.js';
-import './renderer/pose.js';
 
 export function boot() {
   if (!SITE.fs) { root.classList.remove('js'); return; }
@@ -32,7 +31,7 @@ export function boot() {
   addEventListener('resize', resized);
   if (window.visualViewport) { visualViewport.addEventListener('resize', resized); visualViewport.addEventListener('scroll', resized); }
   onMQ(lightq, () => { if (themeGet() === 'auto') themeChanged(); });
-  onMQ(rmq, () => { if (liveFetch && liveFetch.inst) try { liveFetch.inst.setReducedMotion(rmq.matches); } catch (e) {} });
+  onMQ(rmq, () => { if (liveFetch && liveFetch.inst) liveFetch.inst.calm(rmq.matches); });
 
   const plainWin = el('div', 'win'), plain = mkPane(HOMEN);
   setPlain(plain, plainWin);
