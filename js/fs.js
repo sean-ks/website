@@ -50,7 +50,7 @@ export function relativeName(n, c) {
 export const quote = s => /^[\w.\/~+-]+$/.test(s) ? s : "'" + s.replace(/'/g, "'\\''") + "'";
 
 const enc = new TextEncoder();
-const DOC_TIME = (() => { const d = new Date(D.lastModified); return isNaN(d) ? new Date() : d; })();
+export const DOC_TIME = (() => { const d = new Date(D.lastModified); return isNaN(d) ? new Date() : d; })();
 const textOf = n => n.t === 'f' ? n.text : n.t === 'g' ? novigText() || '' : '';
 export const sizeOf = n => n.t === 'd' ? 4096 : n.t === 'l' ? (n.st && n.st.size) || 0 : enc.encode(textOf(n)).length;
 export const mtime = n => n.t === 'g' && stats() ? new Date(stats().updated) : n.t === 'l' && n.st && n.st.mt ? n.st.mt : DOC_TIME;

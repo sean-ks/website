@@ -4,10 +4,18 @@ import { P } from './state.js';
 import { themeGet, themeEff, setTheme } from './metrics.js';
 import { L, Ls, bad } from './output.js';
 import { update, mayFocus } from './screen.js';
-import { fastfetch, clear, upMins, upStr } from './fastfetch.js';
+import { fastfetch, clear } from './fastfetch.js';
 import { killPane, login } from './tmux.js';
 import { runTmux } from './tmux-commands.js';
 
+const upMins = () => Math.floor(performance.now() / 60000);
+function upStr(m) {
+  const d = Math.floor(m / 1440), h = Math.floor(m / 60) % 24, n = m % 60, p = [];
+  if (d) p.push(d + (d > 1 ? ' days' : ' day'));
+  if (h) p.push(h + (h > 1 ? ' hours' : ' hour'));
+  if (n || !p.length) p.push(n + (n === 1 ? ' minute' : ' minutes'));
+  return p.join(', ');
+}
 export const SYSTEM_COMMANDS = {
   clear() { clear(); return 0; },
   fastfetch() { fastfetch(); return 0; },
@@ -33,7 +41,7 @@ export const SYSTEM_COMMANDS = {
   },
   uptime(args) {
     const m = upMins(), d = Math.floor(m / 1440), h = Math.floor(m / 60) % 24, n = m % 60;
-    if (args[0] === '-p' || args[0] === '--pretty') { L('up ' + upStr(m, 'minute')); return 0; }
+    if (args[0] === '-p' || args[0] === '--pretty') { L('up ' + upStr(m)); return 0; }
     const t = parts(dtf({ hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23' }), new Date());
     L(' ' + t.hour + ':' + t.minute + ':' + t.second + ' up ' + (d ? d + (d > 1 ? ' days, ' : ' day, ') : '') +
       (h ? String(h).padStart(2) + ':' + String(n).padStart(2, '0') : n + ' min') + ',  1 user,  load average: 0.00, 0.00, 0.00');

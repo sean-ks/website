@@ -1,4 +1,4 @@
-const ROWS = 84, LINE_HEIGHT = 1.15, MIN_FONT = 3, MAX_DPR = 3, FRAME_MS = 25, SNOW_DENSITY = 0.012;
+const ROWS = 84, LINE_HEIGHT = 1.15, MIN_FONT = 3, MAX_DPR = 3, FRAME_MS = 25;
 const STEP = 1.1 / ROWS, TAU = Math.PI * 2;
 const IDLE_SPIN = 0.5, HOME_TILT = 0.24, MIN_TILT = -0.1, MAX_TILT = 1, CAMERA = 6.5, PIVOT_Y = 1.15;
 const LIGHT_DIR = [-0.45, 0.55, -0.7];
@@ -225,8 +225,6 @@ buildGlints();
 buildGlitter();
 driftGlitter(0);
 
-const flakes = Array.from({ length: 900 }, () => ({ x: rand(), y: rand(), fall: between(0.12, 0.38), seed: rand(), glyph: pick(".'.*") }));
-
 let r = 0, g = 0, b = 0;
 function tone(color, shade, white = 0) {
   r = lerp(color[0] * shade, 255, white);
@@ -239,8 +237,8 @@ function blend(from, to, t, shade = 1) {
   b = lerp(from[2], to[2], t) * shade;
 }
 
-export function createTree(canvas, sky, width, height) {
-  const ctx = canvas.getContext('2d'), skyCtx = sky.getContext('2d'), family = getComputedStyle(canvas).fontFamily, bursts = [];
+export function createTree(canvas, width, height) {
+  const ctx = canvas.getContext('2d'), family = getComputedStyle(canvas).fontFamily, bursts = [];
   let dpr, fontSize, cellW, cellH, cols, rows, originX, originY, colsPerUnit, rowsPerUnit, glyphs, depths, rgb;
   let yaw = 0.6, tilt = HOME_TILT, spin = IDLE_SPIN, tiltSpeed = 0, idleDirection = 1, pace = 1, clock = 0;
   let pointer = null, lastX = 0, lastY = 0, lastMove = 0, released = -Infinity, live = true, visible = true, lastFrame = 0;
@@ -372,25 +370,6 @@ export function createTree(canvas, sky, width, height) {
     }
   }
 
-  function snow(dt) {
-    const w = sky.clientWidth, h = sky.clientHeight, unit = rowsPerUnit * cellH;
-    if (!w || !h) return;
-    if (sky.width !== Math.round(w * dpr)) sky.width = Math.round(w * dpr);
-    if (sky.height !== Math.round(h * dpr)) sky.height = Math.round(h * dpr);
-    skyCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    skyCtx.clearRect(0, 0, w, h);
-    skyCtx.font = ctx.font;
-    skyCtx.textBaseline = 'top';
-    const count = pace < 1 ? 0 : Math.min(flakes.length, (w * h * SNOW_DENSITY) / (cellW * cellH));
-    for (let i = 0; i < count; i++) {
-      const flake = flakes[i], shade = 0.55 + 0.3 * flake.seed + 0.15 * Math.sin(clock * 3 + flake.seed * 40);
-      flake.y = (flake.y + (flake.fall * unit * dt) / h) % 1;
-      const x = flake.x * w + 0.07 * unit * Math.sin(clock * 0.8 + flake.seed * TAU);
-      skyCtx.fillStyle = `rgb(${ICE.map(channel => Math.round(channel * shade))})`;
-      skyCtx.fillText(flake.glyph, Math.floor(x / cellW) * cellW, Math.floor((flake.y * h) / cellH) * cellH);
-    }
-  }
-
   function frame(now) {
     if (!live) return;
     requestAnimationFrame(frame);
@@ -411,7 +390,6 @@ export function createTree(canvas, sky, width, height) {
       rasterize();
       paint();
     }
-    snow(dt);
   }
 
   function onDown(event) {
@@ -468,7 +446,6 @@ export function createTree(canvas, sky, width, height) {
       live = false;
       watcher.disconnect();
       canvas.style.cursor = '';
-      skyCtx.clearRect(0, 0, sky.width, sky.height);
     },
   };
 }
